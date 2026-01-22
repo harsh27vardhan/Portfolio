@@ -12,7 +12,7 @@ const Hero = () => {
     useEffect(() => {
         const fetchVisits = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/visits');
+                const response = await fetch('https://portfolio-47ec.onrender.com/api/visits');
                 if (!response.ok) throw new Error('Network error');
                 const data = await response.json();
                 setVisits(data.count);
