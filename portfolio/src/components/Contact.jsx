@@ -11,8 +11,57 @@ const Contact = () => {
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 
+    const [errors, setErrors] = useState({});
+
+    const validateForm = () => {
+        let tempErrors = {};
+        let isValid = true;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!form.current.user_name.value.trim()) {
+            tempErrors.name = "Name is required";
+            isValid = false;
+        }
+
+        if (!form.current.user_email.value.trim()) {
+            tempErrors.email = "Email is required";
+            isValid = false;
+        } else if (!emailRegex.test(form.current.user_email.value)) {
+            tempErrors.email = "Please enter a valid email";
+            isValid = false;
+        }
+
+        if (!form.current.subject.value.trim()) {
+            tempErrors.subject = "Subject is required";
+            isValid = false;
+        }
+
+        if (!form.current.message.value.trim()) {
+            tempErrors.message = "Message is required";
+            isValid = false;
+        }
+
+        setErrors(tempErrors);
+        return isValid;
+    };
+
     const sendEmail = (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Please fix the errors in the form.',
+                showConfirmButton: false,
+                timer: 3000,
+                background: '#1f1f1f',
+                color: '#ffffff'
+            });
+            return;
+        }
+
         setIsSending(true);
 
         const params = {
@@ -26,6 +75,7 @@ const Contact = () => {
         emailjs.send(SERVICE_ID, TEMPLATE_ID, params, PUBLIC_KEY)
             .then((result) => {
                 form.current.reset();
+                setErrors({});
                 Swal.fire({
                     toast: true,
                     position: 'top-end',
@@ -61,19 +111,23 @@ const Contact = () => {
                     <form ref={form} className="contact-form" id="contact-form" onSubmit={sendEmail}>
                         <div className="form-group">
                             <label htmlFor="name">Name</label>
-                            <input type="text" id="name" name="user_name" placeholder="Your Name" required />
+                            <input type="text" id="name" name="user_name" placeholder="Your Name" style={errors.name ? { borderBottomColor: '#ef4444' } : {}} />
+                            {errors.name && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.name}</span>}
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="user_email" placeholder="your@email.com" required />
+                            <input type="email" id="email" name="user_email" placeholder="your@email.com" style={errors.email ? { borderBottomColor: '#ef4444' } : {}} />
+                            {errors.email && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.email}</span>}
                         </div>
                         <div className="form-group">
                             <label htmlFor="subject">Subject</label>
-                            <input type="text" id="subject" name="subject" placeholder="Project Inquiry" required />
+                            <input type="text" id="subject" name="subject" placeholder="Project Inquiry" style={errors.subject ? { borderBottomColor: '#ef4444' } : {}} />
+                            {errors.subject && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.subject}</span>}
                         </div>
                         <div className="form-group">
                             <label htmlFor="message">Message</label>
-                            <textarea id="message" name="message" rows="5" placeholder="Let's build something amazing..." required></textarea>
+                            <textarea id="message" name="message" rows="5" placeholder="Let's build something amazing..." style={errors.message ? { borderBottomColor: '#ef4444' } : {}}></textarea>
+                            {errors.message && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.message}</span>}
                         </div>
                         <button type="submit" className="btn btn-primary glow-effect" disabled={isSending}>
                             {isSending ? 'Sending...' : 'Send Message'}

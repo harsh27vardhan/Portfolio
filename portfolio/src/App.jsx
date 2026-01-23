@@ -7,6 +7,7 @@ import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Chatbot from './components/Chatbot';
 
 const App = () => {
   useEffect(() => {
@@ -87,6 +88,7 @@ const App = () => {
       <Projects />
       <Contact />
       <Footer />
+      <Chatbot />
     </div>
   );
 };
