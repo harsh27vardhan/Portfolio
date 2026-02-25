@@ -13,7 +13,7 @@ const Experience = () => {
                         <div className="timeline-dot"></div>
                         <div className="timeline-content glass">
                             <span className="date">October 2025 - Present</span>
-                            <h3>Senior Frontend Engineer</h3>
+                            <h3>Junior Software Analyst</h3>
                             <p className="company">Enaviya Information Technology Pvt. Ltd.</p>
                             <p className="description">
                                 Leveraging Yeoman for project scaffolding, TypeScript for robust, type-safe coding, and the Node.js-based toolchain (Gulp and Webpack) for automated building, optimization, and deployment of SPFx components.
