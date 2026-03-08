@@ -137,16 +137,16 @@ const Contact = () => {
 
                 <div className="social-links fade-in-up delay-200">
                     <a href="https://www.linkedin.com/in/harsh27vardhan" target="_blank" className="social-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" className="social-img" />
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" className="social-img" />
                     </a>
                     <a href="https://www.github.com/harsh27vardhan" target="_blank" className="social-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/640px-Octicons-mark-github.svg.png" alt="GitHub" className="social-img" />
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" className="social-img" style={{ filter: 'invert(1)' }} />
                     </a>
                     <a href="https://www.instagram.com/_harsh27vardhan" target="_blank" className="social-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" className="social-img" />
+                        <img src="https://img.icons8.com/fluency/480/instagram-new.png" alt="Instagram" className="social-img" />
                     </a>
                     <a href="mailto:reachvardhanharsh9@gmail.com" target="_blank" className="social-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail" className="social-img" />
+                        <img src="https://img.icons8.com/color/480/gmail-new.png" alt="Gmail" className="social-img" />
                     </a>
                 </div>
             </div>

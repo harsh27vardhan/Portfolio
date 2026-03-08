@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import Skills from './components/Skills';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
+import GithubProfile from './components/GithubProfile';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
@@ -86,6 +87,7 @@ const App = () => {
       <Skills />
       <Experience />
       <Projects />
+      <GithubProfile />
       <Contact />
       <Footer />
       <Chatbot />

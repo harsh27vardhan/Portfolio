@@ -29,6 +29,7 @@ const Navbar = () => {
                     <li><a href="#skills" className="nav-link" onClick={closeMenu}>Skills</a></li>
                     <li><a href="#experience" className="nav-link" onClick={closeMenu}>Experience</a></li>
                     <li><a href="#projects" className="nav-link" onClick={closeMenu}>Projects</a></li>
+                    <li><a href="#github" className="nav-link" onClick={closeMenu}>GitHub</a></li>
                     <li><a href="#contact" className="nav-link" onClick={closeMenu}>Contact</a></li>
                 </ul>
             </div>
