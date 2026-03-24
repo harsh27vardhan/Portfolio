@@ -1,110 +1,125 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 
-const TiltCard = ({ children, className }) => {
-    const cardRef = useRef(null);
+const SKILLS_DATA = [
+    // Languages
+    { name: 'C++', icon: 'devicon-cplusplus-plain colored' },
+    { name: 'Python', icon: 'devicon-python-plain colored' },
+    { name: 'HTML5', icon: 'devicon-html5-plain colored' },
+    { name: 'CSS3', icon: 'devicon-css3-plain colored' },
+    { name: 'JavaScript', icon: 'devicon-javascript-plain colored' },
+    { name: 'SQL', icon: 'devicon-mysql-plain colored' },
+    // Core
+    { name: 'DSA', icon: 'fa-solid fa-sitemap' },
+    { name: 'OOPS', icon: 'fa-solid fa-cubes' },
+    { name: 'DBMS', icon: 'fa-solid fa-server' },
+    { name: 'OS', icon: 'fa-solid fa-desktop' },
+    // Tools
+    { name: 'VS Code', icon: 'devicon-vscode-plain colored' },
+    { name: 'Git', icon: 'devicon-git-plain colored' },
+    { name: 'GitHub', icon: 'fa-brands fa-github' },
+    { name: 'MongoDB', icon: 'devicon-mongodb-plain colored' },
+    { name: 'Docker', icon: 'devicon-docker-plain colored' },
+    { name: 'Jenkins', icon: 'devicon-jenkins-line colored' },
+    { name: 'Jira', icon: 'devicon-jira-plain colored' },
+    // Frameworks
+    { name: 'Express', icon: 'fa-solid fa-server' },
+    { name: 'Node.js', icon: 'devicon-nodejs-plain colored' },
+    { name: 'Tailwind', icon: 'devicon-tailwindcss-original colored' },
+    { name: 'React', icon: 'devicon-react-original colored' },
+    { name: 'Redux', icon: 'devicon-redux-original colored' },
+    { name: 'Cucumber', icon: 'devicon-cucumber-plain colored' },
+    // Testing
+    { name: 'Selenium', icon: 'devicon-selenium-original colored' },
+    { name: 'Manual Testing', icon: 'fa-solid fa-clipboard-check' },
+    { name: 'Automated Testing', icon: 'fa-solid fa-gears' },
+    { name: 'API Testing', icon: 'fa-solid fa-rocket' },
+];
 
-    const handleMouseMove = (e) => {
-        const card = cardRef.current;
-        if (!card) return;
+const SkillNode = ({ data, index, total, onHover }) => {
+    // 3D Spherical/Cylindrical Spiral Math
+    const phi = Math.acos(-1 + (2 * index) / total);
+    const theta = index * 0.8;
 
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+    const radius = 280 * Math.sin(phi) + 50;
 
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+    const x = radius * Math.cos(theta);
+    const z = radius * Math.sin(theta);
+    const y = (index / total - 0.5) * 600;
 
-        const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
-        const rotateY = ((x - centerX) / centerX) * 10;
+    // Individual node rotation to face outward
+    const rotationY = (theta * 180) / Math.PI;
 
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-    };
-
-    const handleMouseLeave = () => {
-        const card = cardRef.current;
-        if (!card) return;
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+    const style = {
+        transform: `translate3d(${x}px, ${y}px, ${z}px) rotateY(${-rotationY}deg)`,
+        zIndex: Math.floor(z + 500),
     };
 
     return (
         <div
-            ref={cardRef}
-            className={`skill-card tilt glass ${className || ''}`}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            className="skill-node glass interactive"
+            style={style}
+            onMouseEnter={() => onHover(true)}
+            onMouseLeave={() => onHover(false)}
         >
-            {children}
+            <div className="node-inner">
+                <i className={data.icon}></i>
+                <span className="skill-label">{data.name}</span>
+            </div>
+            <div className="node-shadow"></div>
         </div>
     );
 };
 
 const Skills = () => {
+    const [isPaused, setIsPaused] = useState(false);
+    const spiralRef = useRef(null);
+    const rotationRef = useRef(0);
+    const animationFrameRef = useRef(null);
+
+    useEffect(() => {
+        const animate = () => {
+            if (!isPaused) {
+                // Adjust rotation increment for speed (e.g., 0.2 for slow rotation)
+                rotationRef.current += 0.2;
+                if (spiralRef.current) {
+                    spiralRef.current.style.transform = `perspective(1200px) rotateY(${rotationRef.current}deg) rotateX(10deg)`;
+                }
+            }
+            animationFrameRef.current = requestAnimationFrame(animate);
+        };
+
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [isPaused]);
+
     return (
         <section id="skills" className="skills-section">
             <div className="container">
-                <h2 className="section-title fade-in-up">Tech <span className="highlight">Stack</span></h2>
+                <h2 className="section-title">
+                    Digital <span className="highlight">Galaxy</span>
+                </h2>
 
-                <div className="skills-grid">
-                    {/* Languages */}
-                    <div className="skill-category fade-in-up delay-100">
-                        <h3>Languages</h3>
-                        <div className="skill-cards">
-                            <TiltCard><i className="devicon-cplusplus-plain colored"></i><span>C++</span></TiltCard>
-                            <TiltCard><i className="devicon-python-plain colored"></i><span>Python</span></TiltCard>
-                            <TiltCard><i className="devicon-html5-plain colored"></i><span>HTML5</span></TiltCard>
-                            <TiltCard><i className="devicon-css3-plain colored"></i><span>CSS3</span></TiltCard>
-                            <TiltCard><i className="devicon-javascript-plain colored"></i><span>JavaScript</span></TiltCard>
-                            <TiltCard><i className="devicon-mysql-plain colored"></i><span>SQL</span></TiltCard>
-                        </div>
-                    </div>
+                <div className="spiral-container">
+                    <div
+                        className="spiral-inner"
+                        ref={spiralRef}
+                    >
+                        {SKILLS_DATA.map((skill, index) => (
+                            <SkillNode
+                                key={index}
+                                data={skill}
+                                index={index}
+                                total={SKILLS_DATA.length}
+                                onHover={setIsPaused}
+                            />
+                        ))}
 
-                    {/* Core Credentials */}
-                    <div className="skill-category fade-in-up delay-200">
-                        <h3>Core Credentials</h3>
-                        <div className="skill-cards">
-                            <TiltCard><i className="fa-solid fa-sitemap"></i><span>DSA</span></TiltCard>
-                            <TiltCard><i className="fa-solid fa-cubes"></i><span>OOPS</span></TiltCard>
-                            <TiltCard><i className="fa-solid fa-server"></i><span>DBMS</span></TiltCard>
-                            <TiltCard><i className="fa-solid fa-desktop"></i><span>OS</span></TiltCard>
-                        </div>
-                    </div>
-
-                    {/* Developer Tools */}
-                    <div className="skill-category fade-in-up delay-300">
-                        <h3>Developer Tools</h3>
-                        <div className="skill-cards">
-                            <TiltCard><i className="devicon-vscode-plain colored"></i><span>VS Code</span></TiltCard>
-                            <TiltCard><i className="devicon-git-plain colored"></i><span>Git</span></TiltCard>
-                            <TiltCard><i className="fa-brands fa-github"></i><span>GitHub</span></TiltCard>
-                            <TiltCard><i className="devicon-mongodb-plain colored"></i><span>MongoDB</span></TiltCard>
-                            <TiltCard><i className="devicon-docker-plain colored"></i><span>Docker</span></TiltCard>
-                            <TiltCard><i className="devicon-jenkins-line colored"></i><span>Jenkins</span></TiltCard>
-                            <TiltCard><i className="devicon-jira-plain colored"></i><span>Jira</span></TiltCard>
-                        </div>
-                    </div>
-
-                    {/* Frameworks */}
-                    <div className="skill-category fade-in-up delay-100">
-                        <h3>Frameworks</h3>
-                        <div className="skill-cards">
-                            <TiltCard><i className="fa-solid fa-server"></i><span>Express</span></TiltCard>
-                            <TiltCard><i className="devicon-nodejs-plain colored"></i><span>Node.js</span></TiltCard>
-                            <TiltCard><i className="devicon-tailwindcss-original colored"></i><span>Tailwind</span></TiltCard>
-                            <TiltCard><i className="devicon-react-original colored"></i><span>React</span></TiltCard>
-                            <TiltCard><i className="devicon-redux-original colored"></i><span>Redux</span></TiltCard>
-                            <TiltCard><i className="devicon-cucumber-plain colored"></i><span>Cucumber</span></TiltCard>
-                        </div>
-                    </div>
-
-                    {/* Testing Tools */}
-                    <div className="skill-category fade-in-up delay-200">
-                        <h3>Testing Tools</h3>
-                        <div className="skill-cards">
-                            <TiltCard><i className="devicon-selenium-original colored"></i><span>Selenium</span></TiltCard>
-                            <TiltCard><i className="fa-solid fa-clipboard-check"></i><span>Manual Testing</span></TiltCard>
-                            <TiltCard><i className="fa-solid fa-gears"></i><span>Automated Testing</span></TiltCard>
-                            <TiltCard><i className="fa-solid fa-rocket"></i><span>API Testing</span></TiltCard>
-                        </div>
+                        {/* Core Pulse */}
+                        <div className="spiral-core"></div>
                     </div>
                 </div>
             </div>
@@ -113,3 +128,4 @@ const Skills = () => {
 };
 
 export default Skills;
+
